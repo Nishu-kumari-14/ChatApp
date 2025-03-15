@@ -17,7 +17,7 @@ public class ChatServer {
                 new Thread(clientHandler).start();
             }
         } catch (IOException ex) {
-            System.out.println("In server");
+
             System.out.println(ex.getMessage());
         }
     }

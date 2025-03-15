@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import static java.lang.System.exit;
 import java.net.*;
@@ -10,38 +11,31 @@ public class ChatClient {
         try (Socket socket = new Socket(SERVER_ADDRESS, PORT)) {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
+            // Create and display the GUI
+            ChatClientGUI gui = new ChatClientGUI(out);
 
             // Read messages from server in a separate thread
-            new Thread(() -> {
+            Thread thread = new Thread(() -> {
                 try {
                     String serverMessage;
                     while ((serverMessage = in.readLine())!=null) {
-                        System.out.println(serverMessage);
+                        gui.displayMessage(serverMessage);
                         if(serverMessage.equals("Disconnected")){
-                            exit(0);
-
+                             exit(0);
                         }
-
-
                     }
                 } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error reading from server: " + ex.getMessage());
                 }
-            }).start();
-
-            // Send messages to server
-
-            String userInput;
-            while ((userInput = consoleInput.readLine())!=null) {
-
-                out.println(userInput);
-
+            });
+            thread.start();
+            try{
+                thread.join();
+            }catch(Exception e){
+                System.out.println(e.getMessage());
             }
-
-
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error connecting to server: " + ex.getMessage());
         }
     }
 }
