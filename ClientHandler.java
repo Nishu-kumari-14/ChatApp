@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import java.net.*;
 
@@ -7,6 +8,7 @@ public class ClientHandler implements Runnable {
     private BufferedReader in;
     private String username;
     private String password;
+    static boolean clearChatArea = false;
     public ClientHandler(Socket socket) {
         this.socket = socket;
     }
@@ -21,14 +23,34 @@ public class ClientHandler implements Runnable {
             out = new PrintWriter(socket.getOutputStream(), true);
 
             // Ask for username
-            out.println("Enter your username:");
-            username = in.readLine();
-            out.println("Enter password");
-            password = in.readLine();
+
+            while (true) {
+                out.println("Enter your username:");
+                username = in.readLine();
+                out.println("Enter password");
+                password = in.readLine();
+                DatabaseHandler.fetchData(username, password);
+                if (DatabaseHandler.flag == 1) {
+                    out.println("clear"); //to clear chat area
+                    ChatServer.broadcast(username + " rejoined the chat!", this);
+                    out.println("Now you can chat with your loved ones");
+
+                    break;
+                } else if (DatabaseHandler.flag == 2) {
+                    JOptionPane.showMessageDialog(null, "user with this name exists....try different combination");
+                    out.println("clear"); //to clear chat area
+
+
+                } else {
+                    saveInformation(username, password);
+                    out.println("clear"); //to clear chat area
+                    ChatServer.broadcast(username + " joined the chat!", this);
+                    out.println("Now you can chat with your loved ones");
+                    break;
+                }
+            }
 
             ChatServer.clientHandlers.add(this);
-            ChatServer.broadcast(username + " joined the chat!", this);
-            out.println("Now you can chat with your loved ones");
             String clientMessage;
             while (!socket.isClosed()) {
                 clientMessage = in.readLine();
@@ -67,5 +89,10 @@ public class ClientHandler implements Runnable {
 
     void sendMessage(String message) {
         out.println(message);
+    }
+    void saveInformation(String username,String password){
+        //save user information to the database
+
+        DatabaseHandler.saveMessage(username,password);
     }
 }

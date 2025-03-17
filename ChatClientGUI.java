@@ -11,7 +11,6 @@ public class ChatClientGUI extends JFrame {
     private JTextField inputField; // For typing messages
     private JButton sendButton; // To send messages
     private PrintWriter out; // To send messages to the server
-    private int count ;
 
     public ChatClientGUI(PrintWriter out) {
         this.out = out;
@@ -64,15 +63,15 @@ public class ChatClientGUI extends JFrame {
         // Display the JFrame
         setVisible(true);
     }
+    //clear chat area
+    void clearChat(){
+        chatArea.setText("");
+    }
 
     // Method to handle sending messages
     private void sendMessage() {
-        count++;
         String message = inputField.getText().trim();
         chatArea.append("Me: "+message + "\n");
-        if(count==2){
-            chatArea.setText("");
-        }
         if (!message.isEmpty()) {
             out.println(message); // Send the message to the server
             inputField.setText(""); // Clear the input field

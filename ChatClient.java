@@ -19,7 +19,12 @@ public class ChatClient {
                 try {
                     String serverMessage;
                     while ((serverMessage = in.readLine())!=null) {
-                        gui.displayMessage(serverMessage);
+
+                        if( (serverMessage.equals("clear"))){
+                              gui.clearChat();
+                        }else{
+                            gui.displayMessage(serverMessage);
+                        }
                         if(serverMessage.equals("Disconnected")){
                              exit(0);
                         }
@@ -29,6 +34,9 @@ public class ChatClient {
                 }
             });
             thread.start();
+
+
+
             try{
                 thread.join();
             }catch(Exception e){
