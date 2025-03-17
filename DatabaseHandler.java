@@ -10,14 +10,14 @@ public class DatabaseHandler {
     private static final String PASSWORD = "1234";
     static int flag;
 
-    public static void saveMessage(String username, String message) {
+    public static void saveMessage(String username, String password) {
 
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            String query = "INSERT INTO chat_history (username, message) VALUES (?, ?)";
+            String query = "INSERT INTO chat_history (username, password) VALUES (?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
-            statement.setString(2, message);
+            statement.setString(2, password);
             statement.executeUpdate();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -26,7 +26,7 @@ public class DatabaseHandler {
    public static void fetchData(String username,String password) {
 
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            String query = "SELECT * FROM chat_history WHERE username = ? OR message = ?";
+            String query = "SELECT * FROM chat_history WHERE username = ? OR password = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1,username);
             statement.setString(2,password);
@@ -35,8 +35,7 @@ public class DatabaseHandler {
 
             while(resultSet.next()){
                     if(resultSet.getString("username").equals(username)) {
-                        System.out.println("after 1st if");
-                        if(resultSet.getString("message").equals(password)){
+                        if(resultSet.getString("password").equals(password)){
                             flag = 1;
                         }else{
                             flag = 2;

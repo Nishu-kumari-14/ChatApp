@@ -37,7 +37,7 @@ public class ClientHandler implements Runnable {
 
                     break;
                 } else if (DatabaseHandler.flag == 2) {
-                    JOptionPane.showMessageDialog(null, "user with this name exists....try different combination");
+                    JOptionPane.showMessageDialog(null, "user exists....try different combination");
                     out.println("clear"); //to clear chat area
 
 
