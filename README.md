@@ -49,3 +49,13 @@ Add private messaging between users
 Implement message history  
 Add user roles and admin features  
 Improve security with password hashing  
+
+## Team Members
+Contributions:  
+Nishu  
+  ChatServer.java  
+  ChatClient.java  
+  ClientHandler.java  
+Bharti  
+  ChatClientGUI.java  
+  DatabaseHandler.java  
