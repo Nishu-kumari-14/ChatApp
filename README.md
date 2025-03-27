@@ -52,10 +52,10 @@ Improve security with password hashing
 
 ## Team Members
 Contributions:  
-Nishu  
-  ChatServer.java  
-  ChatClient.java  
-  ClientHandler.java  
-Bharti  
-  ChatClientGUI.java  
-  DatabaseHandler.java  
+  Nishu  
+    ChatServer.java  
+    ChatClient.java  
+    ClientHandler.java  
+  Bharti  
+    ChatClientGUI.java  
+    DatabaseHandler.java  
