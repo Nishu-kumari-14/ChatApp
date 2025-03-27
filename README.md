@@ -51,11 +51,20 @@ Add user roles and admin features
 Improve security with password hashing  
 
 ## Team Members
-Contributions:  
+
+Nishu kumari  
+Bharti Sharma  
+
+## Contributions  
+
   Nishu  
+
     ChatServer.java  
     ChatClient.java  
-    ClientHandler.java  
+    ClientHandler.java 
+
+
   Bharti  
+
     ChatClientGUI.java  
     DatabaseHandler.java  
