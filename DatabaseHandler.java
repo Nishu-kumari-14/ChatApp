@@ -1,31 +1,39 @@
 import javax.swing.*;
 import java.sql.*;
 
-// Save the message to the database
-//DatabaseHandler.saveMessage(username, clientMessage); in calss ClientHandler
-
 public class DatabaseHandler {
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/chat";
     private static final String USER = "root";
     private static final String PASSWORD = "1234";
     static int flag;
+    static Connection connection;
+
+    static void establishConnection() throws SQLException {
+        try{
+            //Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("connection Established");
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Error while checking DataBase" + e.getMessage());
+            connection.close();
+        }
+    }
 
     public static void saveMessage(String username, String password) {
 
-
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try{
             String query = "INSERT INTO chat_history (username, password) VALUES (?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, username);
             statement.setString(2, password);
             statement.executeUpdate();
-        } catch (SQLException ex) {
+        }catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
    public static void fetchData(String username,String password) {
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try{
             String query = "SELECT * FROM chat_history WHERE username = ? OR password = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1,username);
@@ -46,8 +54,7 @@ public class DatabaseHandler {
             }
 
         } catch (SQLException e) {
-
-            JOptionPane.showMessageDialog(null, "Error while checking DataBase" + e.getMessage());
+            System.out.println(e.getMessage());
 
         }
     }

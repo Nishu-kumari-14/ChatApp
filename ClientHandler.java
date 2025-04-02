@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.io.*;
 import java.net.*;
+import java.sql.SQLException;
 
 public class ClientHandler implements Runnable {
     private Socket socket;
@@ -17,13 +18,18 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-
+            System.out.println("Inside run");
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             out = new PrintWriter(socket.getOutputStream(), true);
 
-            // Ask for username
+            try{
+                DatabaseHandler.establishConnection(); // Connection Establishment with the database
+            }catch(SQLException e){
+                JOptionPane.showMessageDialog(null, "Error while checking DataBase" + e.getMessage());
+            }
 
+            System.out.println("Connection Establihsed");
             while (true) {
                 out.println("Enter your username:");
                 username = in.readLine();
@@ -49,7 +55,7 @@ public class ClientHandler implements Runnable {
                     break;
                 }
             }
-
+            System.out.println("Outside while");
             ChatServer.clientHandlers.add(this);
             String clientMessage;
             while (!socket.isClosed()) {
